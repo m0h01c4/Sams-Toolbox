@@ -838,37 +838,175 @@
 <body>
     <!-- Instructions Modal -->
     <div class="modal-overlay" id="instructions-modal">
-        <div class="modal">
-            <h2>🧰 Welcome to Sam's Club Tools of the Trade!</h2>
-            <div class="instructions-text">
-                <h3>How it works:</h3>
-                <ul>
-                    <li>Enter your User ID to reveal your assigned tool (we load assignments when available)</li>
-                    <li>If your User ID isn't found, we'll default to the Multi-Tool so you can continue</li>
-                </ul>
-                <h3>People Partner Tools:</h3>
-                <ul>
-                    <li><strong><img src="wrench emoji.png" alt="Wrench" style="width: 20px; height: 20px; object-fit: contain; vertical-align: middle;"> Wrench:</strong> Fix and maintain team dynamics</li>
-                    <li><strong><img src="measuring tape emoji.png" alt="Measuring Tape" style="width: 20px; height: 20px; object-fit: contain; vertical-align: middle;"> Measuring Tape:</strong> Assess and measure progress</li>
-                    <li><strong><img src="hammer emoji.png" alt="Hammer" style="width: 20px; height: 20px; object-fit: contain; vertical-align: middle;"> Hammer:</strong> Build strong foundations</li>
-                    <li><strong><img src="multitool emoji.png" alt="Multi-Tool" style="width: 20px; height: 20px; object-fit: contain; vertical-align: middle;"> Multi-tool:</strong> Versatile problem solver</li>
-                </ul>
-            </div>
+        <div class="modal" id="entry-modal">
+            <h2>Please take this survey to determine your tool</h2>
+            <p style="margin-bottom: 20px; color: #718096;">Enter your User ID below to begin.</p>
             <input type="text" class="user-id-input" id="user-id" placeholder="Enter your User ID" maxlength="60">
             <br>
             <div id="assignments-status" style="margin-top:10px; font-size:0.9em; color:#718096;"></div>
             <div style="margin-top:8px; display:flex; justify-content:center; gap:10px; align-items:center;">
-                <!-- CSV upload controls removed per request -->
-                <button class="modal-btn" onclick="revealTool()">Reveal My Tool</button>
+                <button class="modal-btn" onclick="showSurveyModal()">Continue</button>
             </div>
         </div>
+        <!-- Survey Modal -->
+        <div class="modal-overlay" id="survey-modal" style="display:none;">
+            <div class="modal" style="max-width:700px;">
+                <h2>Please rate the following statements based on how much they describe you by using the scale:</h2>
+                <form id="tool-survey">
+                    <table style="width:100%;margin-top:20px;margin-bottom:20px;border-collapse:collapse;">
+                        <thead>
+                            <tr style="background:#f7fafc;">
+                                <th style="text-align:left;padding:8px;font-weight:500;">&nbsp;</th>
+                                <th style="padding:8px;font-weight:500;">Not at all like me</th>
+                                <th style="padding:8px;font-weight:500;">Rarely like me</th>
+                                <th style="padding:8px;font-weight:500;">Sometimes like me</th>
+                                <th style="padding:8px;font-weight:500;">Often like me</th>
+                                <th style="padding:8px;font-weight:500;">Very much like me</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td style="padding:8px;">I enjoy taking a complex, broken process and figuring out how to fix it from the ground up.</td>
+                                <td><input type="radio" name="q1" value="1" required></td>
+                                <td><input type="radio" name="q1" value="2"></td>
+                                <td><input type="radio" name="q1" value="3"></td>
+                                <td><input type="radio" name="q1" value="4"></td>
+                                <td><input type="radio" name="q1" value="5"></td>
+                            </tr>
+                            <tr>
+                                <td style="padding:8px;">When someone on the team is struggling, I'm the first to offer a listening ear and support.</td>
+                                <td><input type="radio" name="q2" value="1" required></td>
+                                <td><input type="radio" name="q2" value="2"></td>
+                                <td><input type="radio" name="q2" value="3"></td>
+                                <td><input type="radio" name="q2" value="4"></td>
+                                <td><input type="radio" name="q2" value="5"></td>
+                            </tr>
+                            <tr>
+                                <td style="padding:8px;">I find satisfaction in ensuring every policy and procedure is followed to the letter.</td>
+                                <td><input type="radio" name="q3" value="1" required></td>
+                                <td><input type="radio" name="q3" value="2"></td>
+                                <td><input type="radio" name="q3" value="3"></td>
+                                <td><input type="radio" name="q3" value="4"></td>
+                                <td><input type="radio" name="q3" value="5"></td>
+                            </tr>
+                            <tr>
+                                <td style="padding:8px;">I'm comfortable with ambiguity and can quickly adjust my plans when a situation changes.</td>
+                                <td><input type="radio" name="q4" value="1" required></td>
+                                <td><input type="radio" name="q4" value="2"></td>
+                                <td><input type="radio" name="q4" value="3"></td>
+                                <td><input type="radio" name="q4" value="4"></td>
+                                <td><input type="radio" name="q4" value="5"></td>
+                            </tr>
+                            <tr>
+                                <td style="padding:8px;">I am often the one to "connect the dots" between different ideas or departments.</td>
+                                <td><input type="radio" name="q5" value="1" required></td>
+                                <td><input type="radio" name="q5" value="2"></td>
+                                <td><input type="radio" name="q5" value="3"></td>
+                                <td><input type="radio" name="q5" value="4"></td>
+                                <td><input type="radio" name="q5" value="5"></td>
+                            </tr>
+                            <tr>
+                                <td style="padding:8px;">I believe effective communication is more about listening and understanding than talking.</td>
+                                <td><input type="radio" name="q6" value="1" required></td>
+                                <td><input type="radio" name="q6" value="2"></td>
+                                <td><input type="radio" name="q6" value="3"></td>
+                                <td><input type="radio" name="q6" value="4"></td>
+                                <td><input type="radio" name="q6" value="5"></td>
+                            </tr>
+                            <tr>
+                                <td style="padding:8px;">I take pride in my ability to manage multiple priorities and stay highly organized.</td>
+                                <td><input type="radio" name="q7" value="1" required></td>
+                                <td><input type="radio" name="q7" value="2"></td>
+                                <td><input type="radio" name="q7" value="3"></td>
+                                <td><input type="radio" name="q7" value="4"></td>
+                                <td><input type="radio" name="q7" value="5"></td>
+                            </tr>
+                            <tr>
+                                <td style="padding:8px;">I am resilient and can stay positive when things don't go as planned.</td>
+                                <td><input type="radio" name="q8" value="1" required></td>
+                                <td><input type="radio" name="q8" value="2"></td>
+                                <td><input type="radio" name="q8" value="3"></td>
+                                <td><input type="radio" name="q8" value="4"></td>
+                                <td><input type="radio" name="q8" value="5"></td>
+                            </tr>
+                            <tr>
+                                <td style="padding:8px;">I love to create a detailed, long-term strategy for a project before starting.</td>
+                                <td><input type="radio" name="q9" value="1" required></td>
+                                <td><input type="radio" name="q9" value="2"></td>
+                                <td><input type="radio" name="q9" value="3"></td>
+                                <td><input type="radio" name="q9" value="4"></td>
+                                <td><input type="radio" name="q9" value="5"></td>
+                            </tr>
+                            <tr>
+                                <td style="padding:8px;">I am always looking for ways to innovate and improve existing HR practices.</td>
+                                <td><input type="radio" name="q10" value="1" required></td>
+                                <td><input type="radio" name="q10" value="2"></td>
+                                <td><input type="radio" name="q10" value="3"></td>
+                                <td><input type="radio" name="q10" value="4"></td>
+                                <td><input type="radio" name="q10" value="5"></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <button type="submit" class="modal-btn" style="margin-top:16px;">Submit Survey</button>
+                </form>
+            </div>
+        </div>
+        <script>
+            function showSurveyModal() {
+                var userId = document.getElementById('user-id').value.trim();
+                if (!userId) {
+                    showTransientNotice('Please enter your User ID', 3000);
+                    return;
+                }
+                document.getElementById('entry-modal').style.display = 'none';
+                document.getElementById('survey-modal').style.display = 'flex';
+            }
+
+            document.getElementById('tool-survey').onsubmit = function(e) {
+                e.preventDefault();
+                // Tally survey results and assign tool
+                let scores = {
+                    hammer: 0,
+                    'measuring-tape': 0,
+                    wrench: 0,
+                    'multi-tool': 0
+                };
+                // Hammer: Q1, Q5, Q9
+                scores.hammer = getQ(1) + getQ(5) + getQ(9);
+                // Tape Measure: Q2, Q6
+                scores['measuring-tape'] = getQ(2) + getQ(6);
+                // Wrench: Q3, Q7
+                scores.wrench = getQ(3) + getQ(7);
+                // Multi-Tool: Q4, Q8, Q10
+                scores['multi-tool'] = getQ(4) + getQ(8) + getQ(10);
+
+                // Find highest score
+                let assignedKey = 'multi-tool';
+                let maxScore = -1;
+                for (const key in scores) {
+                    if (scores[key] > maxScore) {
+                        maxScore = scores[key];
+                        assignedKey = key;
+                    }
+                }
+                window.surveyToolScores = scores;
+                window.surveyAssignedKey = assignedKey;
+                document.getElementById('survey-modal').style.display = 'none';
+                revealTool(assignedKey);
+            };
+
+            function getQ(n) {
+                const val = document.querySelector('input[name="q' + n + '"]:checked');
+                return val ? parseInt(val.value, 10) : 0;
+            }
+        </script>
     </div>
 
     <!-- Toolbox Reveal Screen -->
     <div class="game-container" id="toolbox-screen" style="display: none;">
         <div class="game-header">
             <div class="sams-club-logo">
-                <img src="sams people logo blue letters.png" alt="Sam's Club People Logo">
+                <span class="game-logo-text" style="font-size:2em;font-weight:bold;color:#0071ce;">Tools of the Trade</span>
             </div>
             <h1 class="game-title">Your Personal Tool</h1>
         </div>
@@ -895,9 +1033,9 @@
     <div class="game-container" id="main-game" style="display: none;">
         <div class="game-header">
             <div class="sams-club-logo">
-                <img src="sams people logo blue letters.png" alt="Sam's Club People Logo">
+                <span class="game-logo-text" style="font-size:2em;font-weight:bold;color:#0071ce;">Tools of the Trade</span>
             </div>
-            <h1 class="game-title">Tools of the Trade</h1>
+            <!-- Removed duplicate Tools of the Trade heading -->
             <p class="game-subtitle">Test your knowledge and team skills!</p>
             <div id="user-tool-display" style="margin-top: 15px; font-size: 1.1em; color: #0071ce;"></div>
         </div>
@@ -947,7 +1085,7 @@
     <div class="game-container networking-container" id="networking-game">
         <div class="networking-header">
             <div class="sams-club-logo">
-                <img src="sams people logo blue letters.png" alt="Sam's Club People Logo">
+                <span class="game-logo-text" style="font-size:2em;font-weight:bold;color:#0071ce;">Tools of the Trade</span>
             </div>
             <h1 class="game-title">Tools of the Trade</h1>
             <p class="game-subtitle">Find your team members and build your network!</p>
@@ -1096,7 +1234,7 @@
 
         <div class="controls">
             <button class="control-btn" onclick="goBackToGame()">Back to Quiz</button>
-            <button class="control-btn" onclick="showNetworkingSummary()">People Toolbox & Resources Summary</button>
+            <button class="control-btn" onclick="showNetworkingSummary()">Toolbox Summary</button>
             <button class="control-btn" onclick="emailResults()" style="background: #38a169;">📧 Email Results</button>
         </div>
     </div>
@@ -1204,9 +1342,8 @@
     "EPDUNCA": {"userId":"EPDUNCA","name":"Erika Duncan","rawAssigned":"Multi-Tool/Adapter","assignedKey":"multi-tool"},
     "EGOAD": {"userId":"EGOAD","name":"Elizabeth Goad","rawAssigned":"Hammer/Problem Solver","assignedKey":"hammer"},
     "HPALME1": {"userId":"HPALME1","name":"Heidi Palmer","rawAssigned":"Multi-Tool/Adapter","assignedKey":"multi-tool"},
-    "ADECHOL": {"userId":"ADECHOL","name":"Alisa Fox","rawAssigned":"Multi-Tool/Adapter","assignedKey":"multi-tool"},
-    "KMZ": {"userId":"KMZ","name":"KM Zouhary","rawAssigned":"Wrench","assignedKey":"wrench"}
-                };
+    "ADECHOL": {"userId":"ADECHOL","name":"Alisa Fox","rawAssigned":"Multi-Tool/Adapter","assignedKey":"multi-tool"}
+};
 
                 // Normalize the preloaded mapping into assignmentsById with both upper and lower keys
                 let assignmentsById = {};
@@ -1656,17 +1793,23 @@
         }
 
         // New functions for toolbox reveal (manual selection)
-    async function revealTool() {
-            const raw = document.getElementById('user-id').value.trim();
-            if (!raw) {
-                showTransientNotice('Please enter your User ID', 3000);
-                return;
-            }
+    async function revealTool(surveyAssignedKey) {
+        const raw = document.getElementById('user-id').value.trim();
+        if (!raw) {
+            showTransientNotice('Please enter your User ID', 3000);
+            return;
+        }
 
-            const idUpper = raw.toUpperCase();
-            const idLower = raw.toLowerCase();
-            currentUser.id = idUpper;
+        const idUpper = raw.toUpperCase();
+        const idLower = raw.toLowerCase();
+        currentUser.id = idUpper;
 
+        // If surveyAssignedKey is provided, use it for assignment
+        if (surveyAssignedKey) {
+            currentUser.name = raw;
+            currentUser.tool = tools[surveyAssignedKey] || tools['multi-tool'];
+            showTransientNotice('Your tool has been assigned based on your survey responses!', 3000);
+        } else {
             // If assignments not loaded yet (common when opening via file://), attempt quick loads
             if (!assignmentsById || Object.keys(assignmentsById).length === 0) {
                 setAssignmentsStatus('Assignments not loaded. Attempting to auto-load mapping...', false);
@@ -1718,14 +1861,15 @@
                 currentUser.tool = tools['multi-tool'];
                 showTransientNotice('User ID not found in assignments. Defaulting to Multi-Tool so you can continue.', 4500);
             }
-
-            // Hide instructions modal and show toolbox
-            document.getElementById('instructions-modal').style.display = 'none';
-            document.getElementById('toolbox-screen').style.display = 'block';
-
-            // Trigger toolbox opening after a brief delay
-            setTimeout(() => openToolbox(), 800);
         }
+
+        // Hide instructions modal and show toolbox
+        document.getElementById('instructions-modal').style.display = 'none';
+        document.getElementById('toolbox-screen').style.display = 'block';
+
+        // Trigger toolbox opening after a brief delay
+        setTimeout(() => openToolbox(), 800);
+    }
 
         function openToolbox() {
             const toolbox = document.getElementById('toolbox');
